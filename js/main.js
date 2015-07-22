@@ -1,7 +1,7 @@
 var data;
 width = $(window).width();
 height = .7*width;
-margin_left = 70;
+margin_left = 10;
 margin_top = 30;
 
 cores = {
@@ -50,7 +50,7 @@ function acha_cor(partido) {
 function desenha_grafico() {
     var svg = dimple.newSvg("#grafico", width, height);
     var myChart = new dimple.chart(svg, data);
-    myChart.setBounds(margin_left, margin_top+30, width-margin_left*4, height-margin_top*3);
+    myChart.setBounds(margin_left, margin_top+30, width-margin_left*8, height-margin_top*3);
     var y = myChart.addMeasureAxis("y", "y");
     y.overrideMax=.4;
     y.overrideMin=-.4;
@@ -61,8 +61,11 @@ function desenha_grafico() {
     for (var cor in cores) {
         myChart.assignColor(cor,acha_cor(cor),acha_cor(cor));
     }
+    series.getTooltipText = function (e) {
+        return [ "DEPUTADO: "+ e.aggField[0] +" ("+ e.aggField[1]+")"]
+    }
     myChart.addLegend(25, 10, 800, 35, "right");
-    myChart.draw(1000);
+    myChart.draw(2000);
     $('.dimple-axis').remove(); 
 }
 

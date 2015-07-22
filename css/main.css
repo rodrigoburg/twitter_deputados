@@ -31,9 +31,9 @@ p.explicacao {
     background: #fcfcfa;
     color: #333;
     font-family: "Flama-Book";
-    margin-left: 20px;
+    margin-left: 3rem;
     position: relative;
-    width: 92%;
+    width: 90%;
 }
 .edados .btn {
     font-family:"Flama-Light";
@@ -63,6 +63,4 @@ text {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    text-anchor: middle;
-
 }
