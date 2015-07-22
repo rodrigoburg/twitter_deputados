@@ -59,6 +59,7 @@ function desenha_grafico() {
     }
 
     myChart.draw(1000);
+    $('.dimple-axis').remove(); 
 }
 
 function inicializa() {
@@ -68,5 +69,4 @@ function inicializa() {
     })
 }
 
-$('.dimple-axis').hide()
 
