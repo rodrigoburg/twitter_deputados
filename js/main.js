@@ -2,7 +2,7 @@ var data;
 width = $(window).width();
 height = .7*width;
 margin_left = 10;
-margin_top = 30;
+margin_top = 7;
 
 cores = {
     "PT"       :["#a00200"],
@@ -62,9 +62,28 @@ function desenha_grafico() {
         myChart.assignColor(cor,acha_cor(cor),acha_cor(cor));
     }
     series.getTooltipText = function (e) {
-        return [ "DEPUTADO: "+ e.aggField[0] +" ("+ e.aggField[1]+")"]
+        return [ e.aggField[0] +" ("+ e.aggField[1]+")"]
     }
-    myChart.addLegend(25, 10, 800, 35, "right");
+    myLegend = myChart.addLegend(15, 0, 800, 20, "left");
+    myLegend._getEntries = function () {
+        var orderedValues = ["PT", "PSDB", "PMDB", "PSD", "PP", "PSB"];
+        var entries = [];
+        orderedValues.forEach(function (v) {
+            entries.push(
+                {
+                    key: v,
+                    fill: myChart.getColor(v).fill,
+                    stroke: myChart.getColor(v).stroke,
+                    opacity: myChart.getColor(v).opacity,
+                    series: series,
+                    aggField: [v]
+                }
+            );
+        }, this);
+
+        return entries;
+    };
+
     myChart.draw(2000);
     $('.dimple-axis').remove(); 
 }

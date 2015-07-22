@@ -18,12 +18,12 @@
 
 p.linhafina {
     font-family:"Flama-Light";
-    font-size:2.4rem;
+    font-size:20px;
     text-align: justify;
 }
 
 p.explicacao {
-    font-size:1.4rem;
+    font-size:12px;
     text-align: justify;
 }
 
@@ -31,18 +31,15 @@ p.explicacao {
     background: #fcfcfa;
     color: #333;
     font-family: "Flama-Book";
-    margin-left: 3rem;
+    margin-left: 0.8rem;
     position: relative;
     width: 90%;
-}
-.edados .btn {
-    font-family:"Flama-Light";
 }
 
 h1.titulo {
     font-family: "Flama-Bold";
     color: #000;
-    font-size: 5rem;
+    font-size: 40px;
     margin: .3em 0 .1em 0;
 }
 
