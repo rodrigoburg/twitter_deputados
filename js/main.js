@@ -1,6 +1,6 @@
 var data;
 width = $(window).width();
-height = 700;
+height = .7*width;
 margin_left = 70;
 margin_top = 30;
 
