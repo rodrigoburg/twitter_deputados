@@ -52,7 +52,11 @@ function desenha_grafico() {
     var myChart = new dimple.chart(svg, data);
     myChart.setBounds(margin_left, margin_top, width-margin_left*4, height-margin_top*3);
     var y = myChart.addMeasureAxis("y", "y");
+    y.overrideMax=.4;
+    y.overrideMin=-.4;
     var x = myChart.addMeasureAxis("x", "x");
+    x.overrideMax=.25;
+    x.overrideMin=-.41;
     series = myChart.addSeries(["nome","partido"], dimple.plot.bubble);
     for (var cor in cores) {
         myChart.assignColor(cor,acha_cor(cor),acha_cor(cor));
