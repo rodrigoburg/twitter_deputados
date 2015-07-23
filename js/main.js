@@ -87,7 +87,7 @@ function desenha_grafico() {
     myChart.draw(4000);
     $('.dimple-axis').remove();
     if (width < 500) {
-        $("circle").attr("r","3")
+        $("circle").attr("r","1.5")
     }
 }
 
