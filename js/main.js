@@ -85,7 +85,10 @@ function desenha_grafico() {
     };
 
     myChart.draw(4000);
-    $('.dimple-axis').remove(); 
+    $('.dimple-axis').remove();
+    if (width < 500) {
+        $("circle").attr("r","3")
+    }
 }
 
 function inicializa() {
