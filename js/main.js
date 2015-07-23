@@ -1,10 +1,10 @@
 var data;
-width = $(window).width();
-height = .7*width;
-margin_left = 10;
-margin_top = 7;
+var width = $(window).width();
+var height = .7*width;
+var margin_left = 10;
+var margin_top = 7;
 
-cores = {
+var cores = {
     "PT"       :["#a00200"],
     "PST"      :["#a51001"],
     "PL"       :["#aa1d01"],
@@ -43,6 +43,15 @@ cores = {
     "PSDC"     :["#4da7de"]
 }
 
+String.prototype.capitalize = function() {
+    var temp = this.split(" ");
+    var saida = "";
+    temp.forEach(function (d){
+        saida += d.charAt(0).toUpperCase() + d.slice(1).toLowerCase() + " ";
+    })
+    return saida.trim();
+}
+
 function acha_cor(partido) {
     return cores[partido]
 }
@@ -61,9 +70,9 @@ function desenha_grafico() {
     for (var cor in cores) {
         myChart.assignColor(cor,acha_cor(cor),acha_cor(cor));
     }
-    series.getTooltipText = function (e) {
-        return [ e.aggField[0] +" ("+ e.aggField[1]+")"]
-    }
+    series.addEventHandler("mouseover", function (e) { destaca(e) })
+    series.addEventHandler("mouseout", function (e) { retira_destaque(e) })
+
     myLegend = myChart.addLegend(15, 0, 800, 20, "left");
     myLegend._getEntries = function () {
         var orderedValues = ["PT", "PSDB", "PMDB", "PSD", "PP"];
@@ -89,6 +98,30 @@ function desenha_grafico() {
     if (width < 500) {
         $("circle").attr("r","1.5")
     }
+}
+
+function destaca(e) {
+    var nome = e.seriesValue[0];
+    var partido = e.seriesValue[1];
+
+    $("#topo").css({background: acha_cor(partido)})
+    $(".tooltip").css({
+        opacity: 1,
+        "border-color": acha_cor(partido),
+        left: event.pageX - 15,
+        top: event.pageY - 20
+
+    });
+    var topo = partido;
+    var resto = nome.capitalize();
+    $("#topo").html(topo);
+    $("#resto").html(resto);
+}
+
+function retira_destaque(e) {
+    $(".tooltip").css({
+        opacity:0
+    })
 }
 
 function inicializa() {
