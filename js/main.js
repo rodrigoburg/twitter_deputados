@@ -16,7 +16,7 @@ var cores = {
     "PSL"      :["#c46102"],
     "PPL"      :["#ca6f03"],
     "PSB"      :["#cf7d03"],
-    "PMDB"     :["#d48b03"],
+    "PMDB"     :["#006500"],
     "PROS"     :["#d99803"],
     "PRTB"     :["#dea604"],
     "PTB"      :["#e4b304"],
@@ -71,6 +71,8 @@ function desenha_grafico() {
         myChart.assignColor(cor,acha_cor(cor),acha_cor(cor));
     }
     series.addEventHandler("mouseover", function (e) { destaca(e) })
+    series.addEventHandler("click", function (e) { destaca(e) })
+
     series.addEventHandler("mouseout", function (e) { retira_destaque(e) })
 
     myLegend = myChart.addLegend(15, 0, 800, 20, "left");
