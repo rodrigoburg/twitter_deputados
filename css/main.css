@@ -68,7 +68,6 @@ div.tooltip {
     width: auto;
     height: auto;
     margin-left: 20px;
-    font: 14px Arial;
     background: white;
     border-radius: 8px;
     pointer-events: none;
@@ -87,7 +86,7 @@ div.tooltip b {
 
 div#topo {
     color: white;
-    font-size: 30px;
+    font-size: 25px;
     padding: 5px;
 
 }
@@ -98,4 +97,6 @@ div#resto {
     padding-top: 5px;
     padding-bottom: 5px;
     line-height: 1;
+    font-size: 15px;
+
 }
