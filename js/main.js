@@ -50,7 +50,7 @@ function acha_cor(partido) {
 function desenha_grafico() {
     var svg = dimple.newSvg("#grafico", width, height);
     var myChart = new dimple.chart(svg, data);
-    myChart.setBounds(margin_left, margin_top+30, width-margin_left*8, height-margin_top*3);
+    myChart.setBounds(margin_left, margin_top+30, width-margin_left*8, height-margin_top*5);
     var y = myChart.addMeasureAxis("y", "y");
     y.overrideMax=.4;
     y.overrideMin=-.4;
@@ -84,7 +84,7 @@ function desenha_grafico() {
         return entries;
     };
 
-    myChart.draw(2000);
+    myChart.draw(4000);
     $('.dimple-axis').remove(); 
 }
 
