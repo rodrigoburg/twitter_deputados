@@ -50,7 +50,7 @@ function acha_cor(partido) {
 function desenha_grafico() {
     var svg = dimple.newSvg("#grafico", width, height);
     var myChart = new dimple.chart(svg, data);
-    myChart.setBounds(margin_left, margin_top+30, width-margin_left*8, height-margin_top*5);
+    myChart.setBounds(margin_left, margin_top+30, width-margin_left*7, height-margin_top*5);
     var y = myChart.addMeasureAxis("y", "y");
     y.overrideMax=.4;
     y.overrideMin=-.4;
@@ -66,7 +66,7 @@ function desenha_grafico() {
     }
     myLegend = myChart.addLegend(15, 0, 800, 20, "left");
     myLegend._getEntries = function () {
-        var orderedValues = ["PT", "PSDB", "PMDB", "PSD", "PP", "PSB"];
+        var orderedValues = ["PT", "PSDB", "PMDB", "PSD", "PP"];
         var entries = [];
         orderedValues.forEach(function (v) {
             entries.push(
