@@ -37,7 +37,7 @@ cores = {
     "PPS"      :["#8cbe8e"],
     "DEM"      :["#82ba9b"],
     "PFL_DEM"  :["#77b6a8"],
-    "PSDB"     :["#0000cc"],
+    "PSDB"     :["#0F186E"],
     "PRONA"    :["#62afc3"],
     "PAN"      :["#58abd0"],
     "PSDC"     :["#4da7de"]
