@@ -1,8 +1,11 @@
 var data;
+var coluna = {};
+var seguidos_existe = false;
 var width = $(window).width();
 var height = .7*width;
 var margin_left = 10;
 var margin_top = 7;
+var grafico_default = "#mapa";
 
 var cores = {
     "PT"       :["#a00200"],
@@ -43,6 +46,12 @@ var cores = {
     "PSDC"     :["#4da7de"]
 }
 
+function acha_cor(partido) {
+    return cores[partido]
+}
+
+//funcões que vamos usar na inicializacao
+//a primeira cria um método para capitalizar só as primeiras letras de uma string
 String.prototype.capitalize = function() {
     var temp = this.split(" ");
     var saida = "";
@@ -52,12 +61,23 @@ String.prototype.capitalize = function() {
     return saida.trim();
 }
 
-function acha_cor(partido) {
-    return cores[partido]
-}
+//aqui cria a clicalização das tabs
+$('#escolhe-grafico a').click(function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+    //se a tabela ainda nao existir
+    if (!(seguidos_existe)) {
+        $('#tabela').CSVToTable('dados/dados_tabela.csv').bind("loadComplete",function() {
+                esconde_colunas();
+        });
+    }
+});
+
+
+//agora comecamos as funcoes mais complexas
 
 function desenha_grafico() {
-    var svg = dimple.newSvg("#grafico", width, height);
+    var svg = dimple.newSvg("#mapa", width, height);
     var myChart = new dimple.chart(svg, data);
     myChart.setBounds(margin_left, margin_top+30, width-margin_left*7, height-margin_top*5);
     var y = myChart.addMeasureAxis("y", "y");
@@ -124,6 +144,40 @@ function retira_destaque(e) {
     $(".tooltip").css({
         opacity:0
     })
+}
+
+function esconde_colunas() {
+    var lista = ["Perfil","Categoria","Total de deputados seguindo"];
+    var i = 1;
+
+    $("th").each(function (j,d) {
+        var texto =$(d).html().trim()
+
+        //se for a coluna perfil, colocar a classe perfil para pegar o CSS
+        if (texto == "Perfil") {
+            $('td:nth-child('+i+')').addClass("perfil");
+        }
+
+        //se for a coluna com o total de seguidores, quebrar alinha e pegar o css pros numeros
+        if (texto == "Total de deputados seguindo") {
+            $(d).html("Total de deputados</br>seguidores")
+            $('td:nth-child('+i+')').addClass("numeros");
+        }
+
+        //se não estiver entre as primeiras, favor esconder
+        if (lista.indexOf(texto) == -1) {
+            $('td:nth-child('+i+'),th:nth-child('+i+')').hide();
+        }
+
+        coluna[texto] = i;
+        i++;
+
+    })
+    $("#tabela").css({
+        "visibility":"visible"
+    })
+    $("#loading-gif").hide()
+
 }
 
 function inicializa() {

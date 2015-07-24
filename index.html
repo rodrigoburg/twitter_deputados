@@ -49,6 +49,9 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href="css/estadaodados.css" rel="stylesheet">
+    <script src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.csvToTable.js"></script>
 
 </head>
 
@@ -122,10 +125,22 @@
 <div id="titulo">
     <h1 class="titulo">Deputados revelam suas diferenças no Twitter</h1>
     <p class="linhafina">Tucanos e petistas seguem tuiteiros diferentes e acabam separados também no mapa da rede social</p>
+    <ul id="escolhe-grafico" class="nav nav-tabs">
+        <li class="active">
+            <a href="#mapa">Mapa de proximidade</a>
+        </li>
+        <li><a href="#seguidos">Os mais seguidos</a></li>
+    </ul>
     <p class="explicacao">Cada bolinha representa um deputado federal com conta no Twitter. A cor indica o partido. Para saber o nome, toque/clique na bolinha. A posição do deputado no gráfico vem dos usuários do Twitter que ele segue. Deputados que compartilham mais amigos ficam próximos uns dos outros. Os que não têm ninguém em comum aparecem  distanciados. Petistas (bolinhas vermelhas) ficam longe dos tucanos (bolinhas azuis), e os peemedebistas (laranja) aparecem entre eles.</p>
 </div>
-<div id="grafico">
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="mapa"></div>
+    <div role="tabpanel" class="tab-pane" id="seguidos">
+        <div id="tabela" style="visibility: hidden"></div>
+        <img id="loading-gif" src="ajax-loader.gif">
+    </div>
 </div>
+
 <div class="tooltip" style="opacity:0">
     <div id="topo"></div>
     <div id="resto"></div>
@@ -137,8 +152,6 @@
 </footer>
 
 
-<script src="js/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script src="js/d3.v3.min.js"></script>
 <script src="js/dimple.v2.1.5.min.js"></script>
 <script type="text/javascript" src ="js/main.js"></script>
