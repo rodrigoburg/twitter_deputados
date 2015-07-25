@@ -49,12 +49,12 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href="css/estadaodados.css" rel="stylesheet">
-    <link href="css/jquery.dataTables.min.css.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.css" rel="stylesheet">
     <script src="js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.csvToTable.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
+    <script type="text/javascript" src="js/dataTables.bootstrap.js"></script>
 
 </head>
 
@@ -129,18 +129,28 @@
     <h1 class="titulo">Deputados revelam suas diferenças no Twitter</h1>
     <p class="linhafina">Tucanos e petistas seguem tuiteiros diferentes e acabam separados também no mapa da rede social</p>
     <ul id="escolhe-grafico" class="nav nav-tabs">
-        <li class="active">
-            <a href="#mapa">Mapa de proximidade</a>
-        </li>
-        <li><a href="#seguidos">Os mais seguidos</a></li>
+        <li class="mapa"><a href="#div-mapa">Mapa de proximidade</a></li>
+        <li class="seguidos"><a href="#div-seguidos">Os mais seguidos</a></li>
     </ul>
-    <p class="explicacao">Cada bolinha representa um deputado federal com conta no Twitter. A cor indica o partido. Para saber o nome, toque/clique na bolinha. A posição do deputado no gráfico vem dos usuários do Twitter que ele segue. Deputados que compartilham mais amigos ficam próximos uns dos outros. Os que não têm ninguém em comum aparecem  distanciados. Petistas (bolinhas vermelhas) ficam longe dos tucanos (bolinhas azuis), e os peemedebistas (laranja) aparecem entre eles.</p>
 </div>
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="mapa"></div>
-    <div role="tabpanel" class="tab-pane" id="seguidos">
-        <div id="tabela" style="visibility: hidden"></div>
-        <img id="loading-gif" src="ajax-loader.gif">
+    <div role="tabpanel" class="tab-pane" id="div-mapa">
+        <p class="explicacao">Cada bolinha representa um deputado federal com conta no Twitter. A cor indica o partido. Para saber o nome, toque/clique na bolinha. A posição do deputado no gráfico vem dos usuários do Twitter que ele segue. Deputados que compartilham mais amigos ficam próximos uns dos outros. Os que não têm ninguém em comum aparecem  distanciados. Petistas (bolinhas vermelhas) ficam longe dos tucanos (bolinhas azuis), e os peemedebistas (laranja) aparecem entre eles.</p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="div-seguidos">
+        <p class="explicacao">A tabela abaixo mostra quais são os perfis no Twitter preferidos pelos deputados. Clique no botão do lado direito para filtrar os dados para algum partido específico, ou use as caixas no fim das colunas para filtrar por nome do perfil ou categoria. Apenas os mil perfis mais seguidos pelos políticos estão indicados - e só os primeiro 250 foram classificados em categorias.</p>
+        <div id="tabela">
+            <div class="dropdown pull-right">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdown_partido" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Filtre por partido
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu partido" aria-labelledby="dropdown_partido">
+                    <li><a href="#">TOTAL</a></li>
+                    <li class="divider"></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -150,7 +160,7 @@
 </div>
 
 <footer class="col-xs-12 text-center">
-    <p>Guilherme Duarte, José Roberto de Toledo e Rodrigo Burgarelli, com dados fornecidos pelo Ibope DTM</p>
+    <p>Guilherme Duarte, José Roberto de Toledo e Rodrigo Burgarelli, com dados fornecidos pelo Ibope DTM referentes a julho/2015</p>
     <p><b>Grupo Estado</b> • Copyright © 2007-2015 • <a href="https://creativecommons.org/licenses/by-sa/3.0/br/">Alguns direitos reservados (CC-By-SA)</a></p>
 </footer>
 
@@ -164,9 +174,6 @@
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53751e9e65674220"></script>
 <!-- AddThis Button END -->
-
-<!-- google analytics -->
-<script language="javascript" type="text/javascript" src="js/edados_analytics.js"></script>
 
 </body>
 </html>

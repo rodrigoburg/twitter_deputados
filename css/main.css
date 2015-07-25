@@ -23,8 +23,10 @@ p.linhafina {
 }
 
 p.explicacao {
-    padding-top:6px;
-    font-size:12px;
+    padding-top:8px;
+    padding-left:5px;
+    padding-bottom:5px;
+    font-size:1.4rem;
     text-align: justify;
 }
 
@@ -112,52 +114,24 @@ div#resto {
     margin-right: auto;
 }
 
-#tabela {
-    margin: auto;
-    width: 95%;
-    padding: 10px;
-}
-
 th {
-    font: Flama-Black;
-    color: #6D929B;
-    border-right: 1px solid #C1DAD7;
-    border-bottom: 1px solid #C1DAD7;
-    border-top: 1px solid #C1DAD7;
-    letter-spacing: 2px;
     text-transform: uppercase;
-    text-align: center;
-    padding: 6px 6px 6px 12px;
-    background: #CAE8EA url(images/bg_header.jpg) no-repeat;
+    font-family: Flama-Bold;
+    background-color: #2c3e50;
+    color:white;
 }
 
-th.nobg {
-    border-top: 0;
-    border-left: 0;
-    border-right: 1px solid #C1DAD7;
-    background: none;
-}
-td {
-    border-right: 1px solid #C1DAD7;
-    border-bottom: 1px solid #C1DAD7;
-    background: #fff;
-    padding: 6px 6px 6px 12px;
-    color: #6D929B;
+td.numero {
+    text-align: right;
 }
 
 td.perfil {
-    border-left: 1px solid #C1DAD7;
-    border-top: 0;
-    background: #fff url(images/bullet2.gif) no-repeat;
-    font: Flama-Bold;
+    font-family: Flama-Bold;
 }
 
-td.numeros {
-    text-align: right;
-    font: Flama-Bold;
-}
-
-td.alt {
-    background: #F5FAFA;
-    color: #B4AA9D;
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+    color: #000000;
 }

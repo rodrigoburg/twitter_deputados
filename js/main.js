@@ -1,11 +1,11 @@
 var data;
-var coluna = {};
 var seguidos_existe = false;
+var mapa_existe = false;
 var width = $(window).width();
 var height = .7*width;
 var margin_left = 10;
 var margin_top = 7;
-var grafico_default = "#mapa";
+var grafico_atual;
 
 var cores = {
     "PT"       :["#a00200"],
@@ -65,19 +65,143 @@ String.prototype.capitalize = function() {
 $('#escolhe-grafico a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
-    //se a tabela ainda nao existir
-    if (!(seguidos_existe)) {
-        $('#tabela').CSVToTable('dados/dados_tabela.csv').bind("loadComplete",function() {
-                esconde_colunas();
-        });
-    }
-});
+    troca_grafico()
+})
 
+function troca_grafico() {
+    if (grafico_atual == "#mapa") {
+        //se a tabela ainda nao existir, baixa os dados e cria a tabela
+        if (!(seguidos_existe)) {
+            baixa_seguidos();
+        }
+        grafico_atual = "#seguidos";
+        window.location.hash = grafico_atual;
+    }
+    else {
+        if (!(mapa_existe)) {
+            baixa_mapa();
+        }
+        grafico_atual = "#mapa";
+        window.location.hash = grafico_atual;
+    }
+};
+
+function baixa_seguidos() {
+    $.getJSON("dados/dados_tabela.json", function (dados) {
+        seguidos_existe = true;
+        dados_tabela = dados;
+        cria_tabela();
+        cria_filtro_partido();
+    });
+}
+function cria_filtro_partido() {
+    var lista_inicial = ["Perfil", "Categoria", "Total de deputados seguindo","PT","PSDB","PMDB","PSB","PSD","PP"];
+    var partidos_primeiros = [ "PT","PSDB","PMDB","PSB","PSD","PP"]
+    var lista = $("ul.partido")
+    partidos_primeiros.forEach(function (key) {
+        lista.append('<li><a href="#">' + key + '</a></li>')
+    })
+    for (key in dados_tabela) {
+        if (lista_inicial.indexOf(key) == -1) {
+            lista.append('<li><a href="#">' + key + '</a></li>')
+        }
+    }
+    lista.click(function (e) {
+        var sigla = $(e.target).html();
+        if (sigla == "TOTAL") {
+            sigla = "Total de deputados seguindo"
+            $("#total").html(sigla)
+        } else {
+            $("#total").html("Total de deputados seguindo ("+sigla+")")
+        }
+        $(".numero").each(function (i,d) { $(d).html(dados_tabela[sigla][i])})
+    });
+}
+
+function cria_tabela() {
+    tableHTML = '<table class="tabela table table-hover table-condensed table-striped table-bordered">';
+    tableHeader = "<thead><tr>"
+    tableBody = "<tbody>"
+    var lista_inicial = ["Perfil","Categoria","Total de deputados seguindo"];
+    lista_inicial.forEach(function (d) {
+        if (d == "Total de deputados seguindo") {
+            tableHeader += "<th id='total'>" + d + "</th>";
+        } else {
+            tableHeader += "<th>" + d + "</th>";
+        }
+    });
+    tableHeader += "</tr></thead>"
+    var tamanho = dados_tabela[lista_inicial[0]].length;
+    for (i = 0; i < tamanho; i++) {
+        var linha = "<tr>"
+        lista_inicial.forEach(function (d) {
+            if (d == "Perfil") {
+                linha += "<td class='perfil'>"+dados_tabela[d][i]+"</td>"
+            } else if (d == "Total de deputados seguindo") {
+                linha += "<td class='numero'>" + dados_tabela[d][i] + "</td>"
+            } else {
+                linha += "<td>"+dados_tabela[d][i]+"</td>"
+            }
+
+        })
+        linha += "</tr>"
+        tableBody += linha
+    }
+
+    tableBody += "</tbody>"
+    tableHTML += tableHeader + tableBody + "</table>"
+    $("#tabela").append(tableHTML)
+
+    var $tfoot = $('<tfoot></tfoot>');
+    $($('thead').clone(true, true).children().get().reverse()).each(function(){
+        $tfoot.append($(this));
+    });
+    $tfoot.insertAfter('table thead');
+
+
+    $('.tabela tfoot th').each( function () {
+        var title = $('.tabela thead th').eq( $(this).index() ).text();
+        if (title == "Perfil" || title == "Categoria") {
+            $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+        } else {
+            $(this).html("");
+        }
+    } );
+
+    var table = $(".tabela").DataTable({
+        aaSorting: [],
+        "bSort" : false,
+        "lengthMenu": [[25, 50, 100, 150, -1], [25, 50, 100, 150, "Todos"]],
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ linhas por página",
+            "zeroRecords": "Não foi encontrado nenhum item",
+            "info": "Mostrango página _PAGE_ de _PAGES_",
+            "infoEmpty": "Não foi encontrado nenhum item",
+            "infoFiltered": "(filtrado do total de _MAX_ itens)",
+            "paginate":{
+                "previous":"Anterior",
+                "next":"Próxima",
+                "first":"Primeira",
+                "last":"Última"
+            }
+        }
+    });
+
+    table.columns().every( function () {
+        var that = this;
+        $( 'input', this.footer() ).on( 'keyup change', function () {
+            that
+                .search( this.value )
+                .draw();
+        } );
+    } );
+    $(".dataTables_filter").remove();
+}
 
 //agora comecamos as funcoes mais complexas
 
 function desenha_grafico() {
-    var svg = dimple.newSvg("#mapa", width, height);
+    var svg = dimple.newSvg("#div-mapa", width, height);
     var myChart = new dimple.chart(svg, data);
     myChart.setBounds(margin_left, margin_top+30, width-margin_left*7, height-margin_top*5);
     var y = myChart.addMeasureAxis("y", "y");
@@ -146,47 +270,28 @@ function retira_destaque(e) {
     })
 }
 
-function esconde_colunas() {
-    var lista = ["Perfil","Categoria","Total de deputados seguindo"];
-    var i = 1;
-
-    $("th").each(function (j,d) {
-        var texto =$(d).html().trim()
-
-        //se for a coluna perfil, colocar a classe perfil para pegar o CSS
-        if (texto == "Perfil") {
-            $('td:nth-child('+i+')').addClass("perfil");
-        }
-
-        //se for a coluna com o total de seguidores, quebrar alinha e pegar o css pros numeros
-        if (texto == "Total de deputados seguindo") {
-            $(d).html("Total de deputados</br>seguidores")
-            $('td:nth-child('+i+')').addClass("numeros");
-        }
-
-        //se não estiver entre as primeiras, favor esconder
-        if (lista.indexOf(texto) == -1) {
-            $('td:nth-child('+i+'),th:nth-child('+i+')').hide();
-        }
-
-        coluna[texto] = i;
-        i++;
-
-    })
-    $(".CSVTable").DataTable();
-    $("#tabela").css({
-        "visibility":"visible"
-    })
-
-    $("#loading-gif").hide()
-
-}
-
-function inicializa() {
+function baixa_mapa() {
     d3.csv( "dados/scatter_deps.csv", function( dados ) {
+        mapa_existe = true;
         data = dados
         desenha_grafico()
     })
+}
+
+function inicializa() {
+    var hash = window.location.hash;
+    if (hash == "#seguidos") {
+        grafico_atual = "#seguidos";
+        $("li.seguidos").addClass("active")
+        $("#div-seguidos").addClass("active")
+        baixa_seguidos()
+    } else {
+        grafico_atual = "#mapa";
+        $("li.mapa").addClass("active")
+        $("#div-mapa").addClass("active")
+        window.location.hash = grafico_atual;
+        baixa_mapa()
+    }
 }
 
 
