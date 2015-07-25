@@ -173,9 +173,11 @@ function esconde_colunas() {
         i++;
 
     })
+    $(".CSVTable").DataTable();
     $("#tabela").css({
         "visibility":"visible"
     })
+
     $("#loading-gif").hide()
 
 }
