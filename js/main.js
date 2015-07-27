@@ -175,7 +175,7 @@ function cria_tabela() {
         "language": {
             "lengthMenu": "Mostrar _MENU_ linhas por página",
             "zeroRecords": "Não foi encontrado nenhum item",
-            "info": "Mostrango página _PAGE_ de _PAGES_",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "Não foi encontrado nenhum item",
             "infoFiltered": "(filtrado do total de _MAX_ itens)",
             "paginate":{
