@@ -196,6 +196,7 @@ function cria_tabela() {
         } );
     } );
     $(".dataTables_filter").remove();
+    $("label").addClass("pull-left")
 }
 
 //agora comecamos as funcoes mais complexas

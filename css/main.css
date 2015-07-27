@@ -135,3 +135,7 @@ tfoot input {
     box-sizing: border-box;
     color: #000000;
 }
+
+table {
+    width:92%;
+}
