@@ -1,4 +1,7 @@
 var data;
+var sigla = "TOTAL"; //valor default
+var seletor_atual = $("li").find("a"); //default total
+var table;
 var seguidos_existe = false;
 var mapa_existe = false;
 var width = $(window).width();
@@ -90,31 +93,58 @@ function baixa_seguidos() {
     $.getJSON("dados/dados_tabela.json", function (dados) {
         seguidos_existe = true;
         dados_tabela = dados;
+
         cria_tabela();
         cria_filtro_partido();
     });
 }
 function cria_filtro_partido() {
-    var lista_inicial = ["Perfil", "Categoria", "Total de deputados seguindo","PT","PSDB","PMDB","PSB","PSD","PP"];
+    //adiciona primeiro esses seis partidos, em forma de li
     var partidos_primeiros = [ "PT","PSDB","PMDB","PSB","PSD","PP"]
     var lista = $("ul.partido")
     partidos_primeiros.forEach(function (key) {
-        lista.append('<li><a href="#">' + key + '</a></li>')
+        lista.append('<li><a href="#seguidos">' + key + '</a></li>')
     })
+
+    //agora adiciona todos os outros, que estão nos dados mas não no array abaixo-
+    var lista_inicial = ["Perfil", "Categoria", "Total de deputados seguindo","PT","PSDB","PMDB","PSB","PSD","PP"];
     for (key in dados_tabela) {
         if (lista_inicial.indexOf(key) == -1) {
-            lista.append('<li><a href="#">' + key + '</a></li>')
+            lista.append('<li><a href="#seguidos">' + key + '</a></li>')
         }
     }
+
+    //quando clicarem na linha
     lista.click(function (e) {
-        var sigla = $(e.target).html();
+        //tira o bold do antigo
+        seletor_atual.html(sigla)
+
+        //atualiza as variaveis
+        seletor_atual = $(e.target);
+        sigla = seletor_atual.html();
+
+        //coloca bold no novo
+        seletor_atual.html("<b>"+sigla+"</b>")
+
+        //agora limpa a tabela
+        table.clear()
+
+        //e adiciona os dados novos linha a linha
         if (sigla == "TOTAL") {
-            sigla = "Total de deputados seguindo"
-            $("#total").html(sigla)
+            for (var i = 0;i < dados_tabela["Perfil"].length;i++) {
+                var linha = [dados_tabela["Perfil"][i],dados_tabela["Categoria"][i],dados_tabela["Total de deputados seguindo"][i]];
+                table.row.add(linha)
+            }
+            $("#total").html("Total de deputados seguindo");
         } else {
+            for (var i = 0;i < dados_tabela["Perfil"].length;i++) {
+                var linha = [dados_tabela["Perfil"][i],dados_tabela["Categoria"][i],dados_tabela[sigla][i]];
+                table.row.add(linha)
+            }
+            table.column(2).order("desc")
             $("#total").html("Total de deputados seguindo ("+sigla+")")
         }
-        $(".numero").each(function (i,d) { $(d).html(dados_tabela[sigla][i])})
+        table.draw();
     });
 }
 
@@ -139,10 +169,9 @@ function cria_tabela() {
                 linha += "<td class='perfil'>"+dados_tabela[d][i]+"</td>"
             } else if (d == "Total de deputados seguindo") {
                 linha += "<td class='numero'>" + dados_tabela[d][i] + "</td>"
-            } else {
-                linha += "<td>"+dados_tabela[d][i]+"</td>"
+            }  else {
+                    linha += "<td>"+dados_tabela[d][i]+"</td>"
             }
-
         })
         linha += "</tr>"
         tableBody += linha
@@ -168,9 +197,8 @@ function cria_tabela() {
         }
     } );
 
-    var table = $(".tabela").DataTable({
+    table = $(".tabela").DataTable({
         aaSorting: [],
-        "bSort" : false,
         "lengthMenu": [[25, 50, 100, 150, -1], [25, 50, 100, 150, "Todos"]],
         "language": {
             "lengthMenu": "Mostrar _MENU_ linhas por página",
@@ -198,8 +226,6 @@ function cria_tabela() {
     $(".dataTables_filter").remove();
     $("label").addClass("pull-left")
 }
-
-//agora comecamos as funcoes mais complexas
 
 function desenha_grafico() {
     var svg = dimple.newSvg("#div-mapa", width, height);
