@@ -1,6 +1,6 @@
 var data;
 var sigla = "TOTAL"; //valor default
-var seletor_atual = $("li").find("a"); //default total
+var seletor_atual = $("#botao_total"); //default total
 var table;
 var seguidos_existe = false;
 var mapa_existe = false;
